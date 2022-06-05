@@ -31,7 +31,7 @@ exports.create = async (req, res, next) => {
 
 // search posts by keyword
 exports.search = async (req, res, next) => {
-  let { keyword, sortby, limit = 10, page = 1, userId, authorId } = req.body;
+  let { keyword, sortby, limit = 10, page = 1, userId, authorId, postId } = req.body;
   let filter = keyword ? { content: new RegExp(`${keyword}`) } : {};
   let sort = sortby === 'datetime_pub' ? { createAt: -1 } : sortby === 'datetime_pub_asc' ? { createAt: 1 } : {};
   if (page < 0) {
@@ -39,7 +39,9 @@ exports.search = async (req, res, next) => {
   }
   let skip = limit * (page - 1);
 
-  if (authorId) {
+  if(postId) {
+    filter._id = postId;
+  } else if (authorId) {
     // 查詢特定使用者
     filter.user = authorId;
   } else if (userId) {
@@ -79,7 +81,7 @@ exports.search = async (req, res, next) => {
     filter.user = { $in: follow };
   }
 
-  const count = await Post.find(filter).count();
+  const count = await Post.find(filter).count().catch(err => appError('400', 'id有誤請確認', next));
   const posts = await Post.find(filter)
     .sort(sort)
     .skip(skip)
@@ -91,7 +93,8 @@ exports.search = async (req, res, next) => {
     .populate({
       path: 'comments',
       select: 'user comment createdAt',
-    });
+    })
+    .catch(err => appError('400', 'id有誤請確認', next));
   console.log(posts);
   let resPosts = posts.map((item) => {
     return {

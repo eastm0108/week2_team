@@ -50,14 +50,15 @@ router.post(
     #swagger.security = [{ apiKeyAuth: [] }]
     #swagger.parameters['body'] = {
       in: 'body',
-      description: 'keyword: 搜尋關鍵字，空值為全部搜尋,\n sortby: datetime_pub最新貼文時間排序 datetime_pub_asc舊到新排序,\n  limit: 每頁幾筆,\n page: 第幾頁開始,\n userId: 填入登入使用者，會搜尋使用者與使用者追蹤者貼文,\n authorId: 搜尋特定使用者所有發文，此欄如有填，則userId欄位無作用\n 不填keyword, userId, authorId可以搜尋全部文章/n userId和authorId二選一填，userId用在個人動態牆，authorId用在特定使用者所有發文',
+      description: 'keyword: 搜尋關鍵字，空值為全部搜尋,\n sortby: datetime_pub最新貼文時間排序 datetime_pub_asc舊到新排序,\n  limit: 每頁幾筆,\n page: 第幾頁開始,\n userId: 填入登入使用者，會搜尋使用者與使用者追蹤者貼文,\n authorId: 搜尋特定使用者所有發文，此欄如有填，則userId欄位無作用\n postId: 搜尋對應id貼文，此欄如有填，則userId、authorId欄位無作用\n 不填keyword, userId, authorId, postId可以搜尋全部文章/n userId、authorId、postId三選一填，userId用在個人動態牆，authorId用在特定使用者所有發文，postId用在取得對應id貼文',
       schema: {
         keyword: "", 
         sortby: "datetime_pub",
         limit: 10,
         page: 1,
         userId: "62741e710b0c853f222d8691",
-        authorId: "62749ba20b0c853f222d8697"
+        authorId: "62749ba20b0c853f222d8697",
+        postId: "627bd58b4b9b3a393e5eb880"
       }
     }
     #swagger.responses[200] = {

@@ -16,7 +16,7 @@ exports.uploadImage = async (req, res, next) => {
   if (type === 'avatar') {
     const dimension = sizeOf(files[0].buffer)
     if (dimension.width !== dimension.height) {
-      appError(400, '圖片寬高比必須為 1：1，請重新選擇照片')
+      appError(400, '圖片寬高比必須為 1：1，請重新選擇照片' , next)
     }
   }
   const client = new ImgurClient({
